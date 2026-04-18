@@ -1,0 +1,34 @@
+### Бэкенд должен быть запущен на порту 8081
+
+
+### 1. Проверка, что сервер жив
+GET http://localhost:8081/api/hello
+
+### 2. Получить все блюда
+GET http://localhost:8081/api/menu
+
+### 3. Получить блюдо по ID (UC-4)
+GET http://localhost:8081/api/menu/1
+
+### 4. Добавить новое блюдо
+POST http://localhost:8081/api/menu
+Content-Type: application/json
+
+{
+  "name": "Пельмени Сибирские",
+  "price": 350
+}
+
+### 5. Получить несуществующее блюдо (ошибка 404)
+GET http://localhost:8081/api/menu/999
+
+### 6. Получить все категории
+GET http://localhost:8081/api/categories
+
+### 7. Добавить категорию
+POST http://localhost:8081/api/categories
+Content-Type: application/json
+
+{
+  "name": "Пельмени"
+}
