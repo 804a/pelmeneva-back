@@ -13,5 +13,9 @@ class MenuItem(
     var name: String = "",
 
     @Column(nullable = false)
-    var price: Int = 0
+    var price: Int = 0,
+
+    @Column(length = 1000)
+    var description: String = ""
+
 )
