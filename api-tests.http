@@ -18,17 +18,39 @@ Content-Type: application/json
   "name": "Пельмени Сибирские",
   "price": 350
 }
+### 5 Обновить блюдо с ID=1 (добавить описание)
+PUT http://localhost:8081/api/menu/1
+Content-Type: application/json
 
-### 5. Получить несуществующее блюдо (ошибка 404)
+{
+  "name": "Пельмени Сибирские",
+  "price": 350,
+  "description": "Домашние пельмени из говядины и свинины. Подаются со сметаной и маслом."
+}
+### 6. Получить несуществующее блюдо (ошибка 404)
 GET http://localhost:8081/api/menu/999
 
-### 6. Получить все категории
+### 7. Получить все категории
 GET http://localhost:8081/api/categories
 
-### 7. Добавить категорию
+### 8. Добавить категорию
 POST http://localhost:8081/api/categories
 Content-Type: application/json
 
 {
   "name": "Пельмени"
+}
+
+### 9 Создать информацию о заведении
+POST http://localhost:8081/api/info/init
+Content-Type: application/json
+
+{
+  "name": "Пельмень Евы",
+  "phone": "8-800-200-80-42",
+  "address": "г. Омск, ул. Ленина, д. 42",
+  "workingHours": "ежедневно с 11:00 до 23:00",
+  "description": "Домашние пельмени с доставкой за 40 минут",
+  "socialVk": "https://vk.com/pelmeni_eva",
+  "socialTelegram": "https://t.me/pelmeni_eva"
 }

@@ -22,6 +22,19 @@ class MenuController(private val repository: MenuItemRepository) {
             ResponseEntity.notFound().build()
         }
     }
+    @PutMapping("/{id}")
+    fun update(@PathVariable id: Long, @RequestBody item: MenuItem): ResponseEntity<MenuItem> {
+        val existing = repository.findById(id)
+        return if (existing.isPresent) {
+            val updated = existing.get()
+            updated.name = item.name
+            updated.price = item.price
+            updated.description = item.description
+            ResponseEntity.ok(repository.save(updated))
+        } else {
+            ResponseEntity.notFound().build()
+        }
+    }
 
     @PostMapping
     fun create(@RequestBody item: MenuItem): MenuItem = repository.save(item)
