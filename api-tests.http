@@ -1,16 +1,32 @@
 ### Бэкенд должен быть запущен на порту 8081
 
+### ==========================================
+### 1. ПРОВЕРКА СЕРВЕРА
+### ==========================================
 
-### 1. Проверка, что сервер жив
+### 1.1. Проверка, что сервер жив
 GET http://localhost:8081/api/hello
 
-### 2. Получить все блюда
+### ==========================================
+### 2. МЕНЮ
+### ==========================================
+
+### 2.1. Получить все блюда (с пагинацией)
 GET http://localhost:8081/api/menu
 
-### 3. Получить блюдо по ID (UC-4)
+### 2.2. Получить меню с пагинацией (страница 0, 5 блюд)
+GET http://localhost:8081/api/menu?page=0&size=5
+
+### 2.3. Получить меню с сортировкой по цене (дорогие сверху)
+GET http://localhost:8081/api/menu?sort=price,desc
+
+### 2.4. Получить блюдо по ID
 GET http://localhost:8081/api/menu/1
 
-### 4. Добавить новое блюдо
+### 2.5. Получить несуществующее блюдо (ошибка 404)
+GET http://localhost:8081/api/menu/999
+
+### 2.6. Добавить новое блюдо
 POST http://localhost:8081/api/menu
 Content-Type: application/json
 
@@ -18,7 +34,8 @@ Content-Type: application/json
   "name": "Пельмени Сибирские",
   "price": 350
 }
-### 5 Обновить блюдо с ID=1 (добавить описание)
+
+### 2.7. Обновить блюдо с ID=1 (добавить описание)
 PUT http://localhost:8081/api/menu/1
 Content-Type: application/json
 
@@ -27,22 +44,19 @@ Content-Type: application/json
   "price": 350,
   "description": "Домашние пельмени из говядины и свинины. Подаются со сметаной и маслом."
 }
-### 6. Получить несуществующее блюдо (ошибка 404)
-GET http://localhost:8081/api/menu/999
 
-### 7. Получить все категории
-GET http://localhost:8081/api/categories
+### 2.8. Удалить блюдо по ID (UC-50)
+DELETE http://localhost:8081/api/menu/2
 
-### 8. Добавить категорию
-POST http://localhost:8081/api/categories
-Content-Type: application/json
+### 2.9. Проверить, что блюдо удалено (404)
+GET http://localhost:8081/api/menu/2
 
-{
-  "name": "Пельмени"
-}
+### ==========================================
+### 3. ИНФОРМАЦИЯ О ЗАВЕДЕНИИ
+### ==========================================
 
-### 9 Создать информацию о заведении
-POST http://localhost:8081/api/info/init
+### 3.1. Создать основную информацию о заведении
+POST http://localhost:8081/api/info
 Content-Type: application/json
 
 {
@@ -54,3 +68,89 @@ Content-Type: application/json
   "socialVk": "https://vk.com/pelmeni_eva",
   "socialTelegram": "https://t.me/pelmeni_eva"
 }
+
+### 3.2. Создать второй филиал
+POST http://localhost:8081/api/info
+Content-Type: application/json
+
+{
+  "name": "Пельмень Евы (Север)",
+  "phone": "8-800-200-80-43",
+  "address": "г. Омск, ул. Маршала Жукова, д. 15",
+  "workingHours": "ежедневно с 10:00 до 22:00",
+  "description": "Второй филиал с собственной доставкой",
+  "socialVk": "https://vk.com/pelmeni_eva_north",
+  "socialTelegram": "https://t.me/pelmeni_eva_north"
+}
+
+### 3.3. Получить основную информацию
+GET http://localhost:8081/api/info
+
+### 3.4. Получить информацию по ID
+GET http://localhost:8081/api/info/2
+
+### ==========================================
+### 4. АКЦИИ
+### ==========================================
+
+### 4.1. Создать акцию (админ)
+POST http://localhost:8081/api/admin/promotions
+Content-Type: application/json
+
+{
+  "title": "Две пельмени по цене одной",
+  "description": "Закажи две порции пельменей и получи вторую в подарок!",
+  "startDate": "2026-05-01",
+  "endDate": "2026-06-01"
+}
+
+### 4.2. Получить активные акции
+GET http://localhost:8081/api/promotions/active
+
+### 4.3. Создать истёкшую акцию
+POST http://localhost:8081/api/admin/promotions
+Content-Type: application/json
+
+{
+  "title": "Новогодняя скидка",
+  "description": "Скидка 30%",
+  "startDate": "2025-12-20",
+  "endDate": "2026-01-15"
+}
+
+### 4.4. Активные акции — только первая
+GET http://localhost:8081/api/promotions/active
+
+### 4.5. Обновить акцию
+PUT http://localhost:8081/api/admin/promotions/1
+Content-Type: application/json
+
+{
+  "title": "Две пельмени по цене одной (обновлено)",
+  "description": "Акция продлена!",
+  "startDate": "2026-05-01",
+  "endDate": "2026-07-01"
+}
+
+### 4.6. Удалить акцию
+DELETE http://localhost:8081/api/admin/promotions/1
+
+### ==========================================
+### 5. ПРОВЕРКА REDIS (КОСВЕННО)
+### ==========================================
+
+### 5.1. Первый запрос (должен быть SQL в консоли)
+GET http://localhost:8081/api/menu
+
+### 5.2. Второй запрос (SQL не должен появляться — из Redis)
+GET http://localhost:8081/api/menu
+
+### ==========================================
+### 6. SWAGGER
+### ==========================================
+
+### 6.1. Проверить, что Swagger UI доступен
+GET http://localhost:8081/swagger-ui.html
+
+### 6.2. Проверить OpenAPI-спецификацию
+GET http://localhost:8081/v3/api-docs
